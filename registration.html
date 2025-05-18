@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | Код доступа</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f9f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('https://sun9-22.userapi.com/impg/KD0bgEH6lz5gNCJtvrBAh1OdVBSbnWYQBX54OA/obFcA_BOQxs.jpg?size=1536x1024&quality=95&sign=8708c27fe54507fd29535deaa4072fc4&type=album');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .auth-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 100, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .auth-header {
+            margin-bottom: 30px;
+        }
+
+        .auth-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .auth-title h2 {
+            color: #666;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            padding-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .auth-title h2.active {
+            color: #2e7d32;
+            border-bottom: 2px solid #2e7d32;
+        }
+
+        .auth-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2e7d32;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            background-color: white;
+        }
+
+        .submit-btn {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #1b5e20;
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .code-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .code-inputs input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .code-inputs input:focus {
+            border-color: #2e7d32;
+            outline: none;
+        }
+
+        .resend-code {
+            color: #2e7d32;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .resend-code.disabled {
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            color: #2e7d32;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <!-- Форма регистрации -->
+        <div id="registration-form">
+            <div class="auth-header">
+                <div class="auth-title">
+                    <h2 class="active" onclick="switchToRegistration()">Регистрация</h2>
+                    <h2 onclick="switchToAuth()">Авторизация</h2>
+                </div>
+                <p class="auth-description">
+                    Данные для авторизации
+                </p>
+            </div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-email">Электронная почта *</label>
+                    <input type="email" id="reg-email" placeholder="my_email@mail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-password">Пароль *</label>
+                    <input type="password" id="reg-password" placeholder="Придумайте пароль" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-lastname">Фамилия</label>
+                    <input type="text" id="reg-lastname" placeholder="Ваша фамилия">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-firstname">Имя</label>
+                    <input type="text" id="reg-firstname" placeholder="Ваше имя">
+                </div>
+
+                <button type="submit" class="submit-btn">Зарегистрироваться</button>
+            </form>
+
+            <p class="footer-text">
+                Нажимая кнопку, вы соглашаетесь с условиями обработки персональных данных
+            </p>
+        </div>
+
+        <!-- Форма авторизации -->
+        <div id="auth-form" class="hidden">
+            <div class="auth-header">
+                <div class="auth-title">
+                    <h2 onclick="switchToRegistration()">Регистрация</h2>
+                    <h2 class="active" onclick="switchToAuth()">Авторизация</h2>
+                </div>
+                <p class="auth-description">
+                    Введите данные для входа в систему
+                </p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="auth-email">Электронная почта *</label>
+                    <input type="email" id="auth-email" placeholder="my_email@mail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="auth-password">Пароль *</label>
+                    <input type="password" id="auth-password" placeholder="Введите ваш пароль" required>
+                </div>
+
+                <div class="form-group" style="text-align: right;">
+                    <a href="#" onclick="switchToRecovery(); return false;">Забыли пароль?</a>
+                </div>
+
+                </button>
+                <a href="https://cv81019.tw1.ru/" class="auth-btn">Войти</a>
+            </form>
+
+            <p class="footer-text">
+                Нет аккаунта? <a href="#" onclick="switchToRegistration(); return false;">Зарегистрируйтесь</a>
+            </p>
+        </div>
+
+        <!-- Форма восстановления пароля -->
+        <div id="recovery-form" class="hidden">
+            <div class="auth-header">
+                <div class="auth-title">
+                    <h2 class="active">Восстановление доступа</h2>
+                </div>
+                <p class="auth-description">
+                    Укажите электронную почту для восстановления пароля
+                </p>
+            </div>
+
+            <form id="send-code-form">
+                <div class="form-group">
+                    <label for="recovery-email">Электронная почта *</label>
+                    <input type="email" id="recovery-email" placeholder="mail@mail.com" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Отправить код</button>
+            </form>
+
+            <form id="verify-code-form" class="hidden">
+                <div class="form-group">
+                    <label>Введите 6-значный код из письма</label>
+                    <div class="code-inputs">
+                        <input type="text" maxlength="1" data-index="0" oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" data-index="1" oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" data-index="2" oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" data-index="3" oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" data-index="4" oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" data-index="5" oninput="moveToNext(this)">
+                    </div>
+                    <div id="code-error" class="error-message hidden">Неверный код</div>
+                    <a href="#" id="resend-code" class="resend-code" onclick="resendCode(); return false;">Отправить код
+                        повторно</a>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-password">Новый пароль *</label>
+                    <input type="password" id="new-password" placeholder="Придумайте новый пароль" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Подтвердите пароль *</label>
+                    <input type="password" id="confirm-password" placeholder="Повторите новый пароль" required>
+                    <div id="password-error" class="error-message hidden">Пароли не совпадают</div>
+                </div>
+
+                <button type="submit" class="submit-btn">Изменить пароль</button>
+            </form>
+
+            <p class="footer-text">
+                Вспомнили пароль? <a href="#" onclick="switchToAuth(); return false;">Войти</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Текущий режим работы формы
+        let currentForm = 'registration';
+        let recoveryEmail = '';
+        let codeSent = false;
+        let resendTimeout = null;
+        let resendSeconds = 60;
+
+        // Переключение между формами
+        function switchToRegistration() {
+            document.getElementById('registration-form').classList.remove('hidden');
+            document.getElementById('auth-form').classList.add('hidden');
+            document.getElementById('recovery-form').classList.add('hidden');
+            currentForm = 'registration';
+            updateActiveTab();
+        }
+
+        function switchToAuth() {
+            document.getElementById('registration-form').classList.add('hidden');
+            document.getElementById('auth-form').classList.remove('hidden');
+            document.getElementById('recovery-form').classList.add('hidden');
+            currentForm = 'auth';
+            updateActiveTab();
+        }
+
+        function switchToRecovery() {
+            document.getElementById('registration-form').classList.add('hidden');
+            document.getElementById('auth-form').classList.add('hidden');
+            document.getElementById('recovery-form').classList.remove('hidden');
+            document.getElementById('send-code-form').classList.remove('hidden');
+            document.getElementById('verify-code-form').classList.add('hidden');
+            currentForm = 'recovery';
+            updateActiveTab();
+        }
+
+        function updateActiveTab() {
+            const regTab = document.querySelector('.auth-title h2:nth-child(1)');
+            const authTab = document.querySelector('.auth-title h2:nth-child(2)');
+
+            regTab.classList.remove('active');
+            authTab.classList.remove('active');
+
+            if (currentForm === 'registration') {
+                regTab.classList.add('active');
+            } else if (currentForm === 'auth') {
+                authTab.classList.add('active');
+            }
+        }
+
+        // Обработка отправки формы регистрации
+        document.getElementById('register-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const lastName = document.getElementById('reg-lastname').value;
+            const firstName = document.getElementById('reg-firstname').value;
+
+            // Здесь должна быть логика отправки данных на сервер
+            console.log('Регистрация:', {email, password, lastName, firstName});
+
+            // Имитация успешной регистрации
+            alert('Регистрация прошла успешно! Теперь вы можете войти.');
+            switchToAuth();
+        });
+
+        // Обработка отправки формы авторизации
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+
+            // Здесь должна быть логика авторизации на сервере
+            console.log('Авторизация:', {email, password});
+
+            // Имитация успешной авторизации
+            alert('Вход выполнен успешно!');
+            // Здесь можно перенаправить пользователя в личный кабинет
+        });
+
+        // Обработка отправки формы восстановления пароля (запрос кода)
+        document.getElementById('send-code-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            recoveryEmail = document.getElementById('recovery-email').value;
+
+            // Здесь должна быть логика отправки кода на сервер
+            console.log('Запрос кода восстановления для:', recoveryEmail);
+
+            // Имитация отправки кода
+            codeSent = true;
+            document.getElementById('send-code-form').classList.add('hidden');
+            document.getElementById('verify-code-form').classList.remove('hidden');
+            startResendTimer();
+        });
+
+        // Обработка проверки кода и смены пароля
+        document.getElementById('verify-code-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Получаем введенный код
+            const codeInputs = document.querySelectorAll('.code-inputs input');
+            let code = '';
+            codeInputs.forEach(input => {
+                code += input.value;
+            });
+
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Проверка совпадения паролей
+            if (newPassword !== confirmPassword) {
+                document.getElementById('password-error').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('password-error').classList.add('hidden');
+            }
+
+            // Здесь должна быть проверка кода и смена пароля на сервере
+            console.log('Проверка кода:', code, 'для email:', recoveryEmail, 'Новый пароль:', newPassword);
+
+            // Имитация успешной смены пароля
+            alert('Пароль успешно изменен! Теперь вы можете войти с новым паролем.');
+            switchToAuth();
+        });
+
+        // Функции для работы с кодом подтверждения
+        function moveToNext(input) {
+            const index = parseInt(input.getAttribute('data-index'));
+            const nextIndex = index + 1;
+
+            if (input.value.length === 1 && nextIndex < 6) {
+                document.querySelector(`.code-inputs input[data-index="${nextIndex}"]`).focus();
+            }
+        }
+
+        function startResendTimer() {
+            const resendLink = document.getElementById('resend-code');
+            resendLink.classList.add('disabled');
+            resendLink.textContent = `Отправить код повторно (${resendSeconds})`;
+
+            resendTimeout = setInterval(() => {
+                resendSeconds--;
+                resendLink.textContent = `Отправить код повторно (${resendSeconds})`;
+
+                if (resendSeconds <= 0) {
+                    clearInterval(resendTimeout);
+                    resendLink.classList.remove('disabled');
+                    resendLink.textContent = 'Отправить код повторно';
+                    resendSeconds = 60;
+                }
+            }, 1000);
+        }
+
+        function resendCode() {
+            const resendLink = document.getElementById('resend-code');
+            if (resendLink.classList.contains('disabled')) return;
+
+            // Здесь должна быть логика повторной отправки кода
+            console.log('Повторная отправка кода для:', recoveryEmail);
+
+            // Имитация отправки кода
+            alert('Код отправлен повторно на вашу почту');
+            startResendTimer();
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function () {
+            // Очистка полей кода при загрузке
+            const codeInputs = document.querySelectorAll('.code-inputs input');
+            codeInputs.forEach(input => {
+                input.value = '';
+            });
+        });
+    </script>
+    <script>
+    // Экспортируем функции для использования в video-platform.js
+    window.switchToRegistration = switchToRegistration;
+    window.switchToAuth = switchToAuth;
+    window.switchToRecovery = switchToRecovery;
+</script>
+</body>
+
+</html>
